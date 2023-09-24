@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ERPWebPortal.Data\ERPWebPortal.Data.csproj" />
+    <ProjectReference Include="..\ERPWebPortal.Services\ERPWebPortal.Services.csproj" />
+    <ProjectReference Include="..\ERPWebPortal.Shared\ERPWebPortal.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

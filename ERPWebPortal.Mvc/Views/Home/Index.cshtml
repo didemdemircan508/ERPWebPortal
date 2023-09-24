@@ -1,0 +1,94 @@
+﻿@model List<ERPWebPortal.Entities.Dtos.PrdOrderReportDto>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>İş Emri</th>
+            <th>Arıza</th>
+            <th>Mola</th>
+            <th>Setup</th>
+            <th>Arge</th>
+            <th>Toplam</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PrdOrderNum</td>
+                <td id="failure" align="right">@item.failureInterval</td>
+                <td id="break" align="right">@item.breakInterval</td>
+                <td id="setup" align="right">@item.setupInterval</td>
+                <td id="rd" align="right">@item.rdInterval</td>
+                <td id="totalRow" align="right">@item.totalInterval</td>
+            </tr>
+
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Toplam</th>
+            <td id="sumFault" align="right"></td>
+            <td id="sumBreak" align="right"></td>
+            <td id="sumSetup" align="right"></td>
+            <td id="sumRd" align="right"></td>
+            <td id="sumTotalRow" align="right"></td>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+@section Scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+            updateSum();
+
+            function updateSum() {
+                var total = 0;
+                $('tbody #failure').each(function (idx, el) {
+                    total += parseFloat($(el).html());
+                    console.log(total);
+                })
+                $('#sumFault').html(total);
+                total = 0;
+                $('tbody #break').each(function (idx, el) {
+                    total += parseFloat($(el).html());
+                    console.log(total);
+                })
+                $('#sumBreak').html(total);
+                total = 0;
+                $('tbody #setup').each(function (idx, el) {
+                    total += parseFloat($(el).html());
+                    console.log(total);
+                })
+                $('#sumSetup').html(total);
+                total = 0;
+                $('tbody #rd').each(function (idx, el) {
+                    total += parseFloat($(el).html());
+                    console.log(total);
+                })
+                $('#sumRd').html(total);
+                total = 0;
+                $('tbody #totalRow').each(function (idx, el) {
+                    total += parseFloat($(el).html());
+                    console.log(total);
+                })
+
+                $('#sumTotalRow').html(total);
+
+            }
+        });
+
+    </script>
+
+
+}
+
