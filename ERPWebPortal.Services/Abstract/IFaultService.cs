@@ -11,5 +11,7 @@ namespace ERPWebPortal.Services.Abstract
     public interface IFaultService
     {
         public List<Fault> GetDataFault(string filePath);
+
+        
     }
 }

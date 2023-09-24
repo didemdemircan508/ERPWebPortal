@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPWebPortal.Data.Abstract
 {
-    public interface IFaultRepository:IRepository<Fault>
+    public interface IFaultRepository : IRepository<Fault>
     {
     }
 }

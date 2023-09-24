@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace ERPWebPortal.Entities.Concrete
 {
-    //duruş tipleri enum olarak tanımlandı
-    public enum FaultTypes
+    public class FaultType
     {
-        Ariza,
-        Mola,
-        Setup,
-        Arge
+
+        public string FaultName { get; set; }
     }
-
-
 }

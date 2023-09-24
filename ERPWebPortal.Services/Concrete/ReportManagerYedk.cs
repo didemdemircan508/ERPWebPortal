@@ -1,29 +1,30 @@
 ﻿using ERPWebPortal.Data.Abstract;
+
+
+using ERPWebPortal.Data.Concrete;
 using ERPWebPortal.Entities.Concrete;
 using ERPWebPortal.Entities.Dtos;
 using ERPWebPortal.Services.Abstract;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ERPWebPortal.Services.Concrete
 {
-    public class ReportManager:IReportService
+    public class ReportManagerYedk : IReportService
     {
         private readonly IFaultRepository _faultRepository;
         private readonly IPrdOrderRepository _prdOrderRepository;
-        private readonly IFaultTypeRepository _faultTypeRepository;
-
+       
         //repositorydelerden istediğimiz methodları çekmek için repository ler inetrface bazında constructora verilir
-        public ReportManager(IFaultRepository faultRepository, IPrdOrderRepository prdOrderRepository,IFaultTypeRepository faultTypeRepository)
+        public ReportManagerYedk(IFaultRepository faultRepository, IPrdOrderRepository prdOrderRepository)
         {
             _faultRepository = faultRepository;
             _prdOrderRepository = prdOrderRepository;
-            _faultTypeRepository = faultTypeRepository;
-
+           
 
         }
         public List<PrdOrderReportDto> Report()
@@ -32,15 +33,17 @@ namespace ERPWebPortal.Services.Concrete
             //duurş listesini json dosyasından okuma işlemi yapılır
 
             List<Fault> faultList = _faultRepository.GetAll("faultData.json");
+          
 
-            List<FaultType> faultTypeList = _faultTypeRepository.GetAll("faultType.json");
             List<PrdOrderReportDto> reportList = new();
             //her iş emri için  ve duruş listesi içerisinde tek tek gezilip,iş emrinın başlama ve bitiş tarihi aralığında süreler hesaplanır ,duruş tipine göre toplamı yapılır
-            foreach (var prdorder in prdOrderList)
+             foreach (var prdorder in prdOrderList)
             {
                 PrdOrderReportDto prdOrderReportDto = new();
-                prdOrderReportDto.sub = new();
-                DateTime realStart = DateTime.MinValue, realEnd = DateTime.MinValue;
+               
+
+                double failureTime=0, breakTime=0, setupTime = 0,rdTime = 0;
+                DateTime realStart= DateTime.MinValue, realEnd = DateTime.MinValue;
                 Boolean isConditon;
                 prdOrderReportDto.PrdOrderNum = prdorder.PrdOrderNum;
 
@@ -56,6 +59,7 @@ namespace ERPWebPortal.Services.Concrete
                         //duruş bitiş gerçek bitiş alınır
                         realEnd = fault.FaultEndDate;
                         isConditon = true;
+
                        
 
 
@@ -69,7 +73,9 @@ namespace ERPWebPortal.Services.Concrete
                         //duruş bitiş iş emri bitişi alınır
                         realEnd = prdorder.EndDate;
                         isConditon = true;
-                       
+
+                      
+
 
                     }
                     //duruş bitiş tarihi iş emri baş-bitiş arasında yada duruş bitiş iş emri tarihine eşitse fakat duruş başlangıç tarihi iş emri başlangıç tarihinden küçükse
@@ -81,8 +87,10 @@ namespace ERPWebPortal.Services.Concrete
                         realStart = prdorder.StartDate;
                         //duruş bitiş gerçek duruş bitiş alınır
                         realEnd = fault.FaultEndDate;
-                        isConditon = true;
+                        isConditon=true;
+
                        
+
 
                     }
                     //duruş başlangıç ve bitiş tarihi ,iş emri baş-bitiş tarihinin arasında değilse ,
@@ -95,56 +103,50 @@ namespace ERPWebPortal.Services.Concrete
                         realStart = prdorder.StartDate;
                         //duruş bitiş  iş emri bitiş alınır
                         realEnd = prdorder.EndDate;
-                        isConditon = true;
-                       
+                        isConditon=true;
 
 
                     }
 
-                    if (isConditon)
+
+
+                   // arıza tipleri göre hesaplanılan aralıkların toplamı alınır
+                    if (fault.FaultType == FaultTypes.Ariza.ToString() && isConditon)
                     {
-                        SubPrdOrderReportDto item = new();
-                        item.FaultName = fault.FaultType.ToString();
-                        item.FaultInterval = (realEnd - realStart).TotalMinutes;
-                        prdOrderReportDto.sub.Add(item);
+                        failureTime += (realEnd - realStart).TotalMinutes;
+
+                    }
+                    if (fault.FaultType == FaultTypes.Mola.ToString() && isConditon)
+                    {
+
+                        breakTime += (realEnd - realStart).TotalMinutes;
+
                     }
 
+                    if (fault.FaultType == FaultTypes.Setup.ToString() && isConditon)
+                    {
+                        setupTime += (realEnd - realStart).TotalMinutes;
+                    }
+
+                    if (fault.FaultType == FaultTypes.Arge.ToString() && isConditon)
+                    {
+                        rdTime += (realEnd - realStart).TotalMinutes;
+                    }
 
                 }
 
+                //raporda kullanılan liste doldurulur
 
-                //duruş tipleri aynı olan dataların toplanması 
-                var Sonuc = from p in prdOrderReportDto.sub
-                            group p by p.FaultName into g
-                            orderby g.Key
-                            select new
-                            {
-                                deger = g.Key,
-                                interval = g.Sum(prd => prd.FaultInterval)
-
-                            };
-
-
-                prdOrderReportDto.sub = new();
-
-                foreach (var item in Sonuc)
-                {
-                    SubPrdOrderReportDto item2 = new();
-                    
-                    item2.FaultName = item.deger;
-                    item2.FaultInterval = item.interval;
-                    prdOrderReportDto.sub.Add(item2);
-
-
-                }
-
+             
 
                 reportList.Add(prdOrderReportDto);
 
             }
-           
+
             return reportList;
 
         }
+
+
     }
 }

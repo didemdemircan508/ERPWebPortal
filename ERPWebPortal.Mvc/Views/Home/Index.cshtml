@@ -1,93 +1,116 @@
-﻿@model List<ERPWebPortal.Entities.Dtos.PrdOrderReportDto>
+﻿@*@model List<ERPWebPortal.Entities.Dtos.PrdOrderReportDto>*@
+@model ERPWebPortal.Entities.Dtos.GeneralPrdOrderListDto
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-
-<table class="table table-bordered">
+<table class="table table-striped" id="tableData">
     <thead>
         <tr>
             <th>İş Emri</th>
-            <th>Arıza</th>
-            <th>Mola</th>
-            <th>Setup</th>
-            <th>Arge</th>
+            @foreach (var item in Model.faultTypes)
+            {
+                <td> @item.FaultName</td>
+
+            }
             <th>Toplam</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.prdOrderReportDtos)
         {
             <tr>
                 <td>@item.PrdOrderNum</td>
-                <td id="failure" align="right">@item.failureInterval</td>
-                <td id="break" align="right">@item.breakInterval</td>
-                <td id="setup" align="right">@item.setupInterval</td>
-                <td id="rd" align="right">@item.rdInterval</td>
-                <td id="totalRow" align="right">@item.totalInterval</td>
-            </tr>
+                @foreach (var item2 in Model.faultTypes)
+                {
+                    int isNot = 0;
+                    @foreach (var item3 in item.sub)
+                    {
+                        if (item3.FaultName == item2.FaultName)
+                        {
+                            <td>@item3.FaultInterval</td>
+                            isNot = 1;
 
+                        }
+
+                    }
+                    if (isNot == 0)
+                    {
+                        <td>0</td>
+
+                    }
+
+                }
+            </tr>
         }
     </tbody>
     <tfoot>
-        <tr>
-            <th>Toplam</th>
-            <td id="sumFault" align="right"></td>
-            <td id="sumBreak" align="right"></td>
-            <td id="sumSetup" align="right"></td>
-            <td id="sumRd" align="right"></td>
-            <td id="sumTotalRow" align="right"></td>
-        </tr>
     </tfoot>
 </table>
+
+
 
 
 
 @section Scripts
     {
     <script>
-
-        $(document).ready(function () {
-            updateSum();
-
-            function updateSum() {
-                var total = 0;
-                $('tbody #failure').each(function (idx, el) {
-                    total += parseFloat($(el).html());
-                    console.log(total);
-                })
-                $('#sumFault').html(total);
-                total = 0;
-                $('tbody #break').each(function (idx, el) {
-                    total += parseFloat($(el).html());
-                    console.log(total);
-                })
-                $('#sumBreak').html(total);
-                total = 0;
-                $('tbody #setup').each(function (idx, el) {
-                    total += parseFloat($(el).html());
-                    console.log(total);
-                })
-                $('#sumSetup').html(total);
-                total = 0;
-                $('tbody #rd').each(function (idx, el) {
-                    total += parseFloat($(el).html());
-                    console.log(total);
-                })
-                $('#sumRd').html(total);
-                total = 0;
-                $('tbody #totalRow').each(function (idx, el) {
-                    total += parseFloat($(el).html());
-                    console.log(total);
-                })
-
-                $('#sumTotalRow').html(total);
-
+        //row lara göre değerlerin toplanması
+        var tablo = document.getElementById("tableData");
+        for (var i = 1; i < tablo.rows.length; i++) {
+            var toplam = 0;
+            for (var j = 1; j < tablo.rows[i].cells.length; j++) {
+                var hücre = tablo.rows[i].cells[j];
+                var veri = parseFloat(hücre.textContent);
+                if (!isNaN(veri)) {
+                    toplam += veri;
+                }
             }
-        });
+
+
+            var yeniSutunHucresi = tablo.rows[i].insertCell(-1);
+            yeniSutunHucresi.textContent = toplam;
+        }
+        //kolonlara göre değerlerin toplanması
+        columnTotal();
+
+
+        function columnTotal() {
+            var tablo = document.getElementById("tableData");
+            var satirlar = tablo.getElementsByTagName("tr");
+            var toplam = Array.from({ length: satirlar[0].children.length }, () => 0);
+
+
+            for (var i = 1; i < satirlar.length; i++) {
+                var hucreler = satirlar[i].getElementsByTagName("td");
+                for (var j = 1; j < hucreler.length; j++) {
+                    toplam[j] += parseFloat(hucreler[j].textContent) || 0;
+                }
+            }
+
+            // Toplam değerleri en alt satıra ekleme
+            var altSatir = document.createElement("tr");
+            for (var k = 0; k < toplam.length; k++) {
+                var yeniHuc = document.createElement("td");
+                yeniHuc.style.border = "0.1px solid black";
+                yeniHuc.style.backgroundColor = "red";
+
+                if (toplam[k] == 0) { yeniHuc.textContent = "Toplam"; }
+                else {
+                    yeniHuc.textContent = toplam[k];
+                }
+
+                altSatir.appendChild(yeniHuc);
+            }
+            tablo.appendChild(altSatir);
+        }
+
+
+
 
     </script>
+
 
 
 }

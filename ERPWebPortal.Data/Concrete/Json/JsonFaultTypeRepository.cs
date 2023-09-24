@@ -1,8 +1,5 @@
 ﻿using ERPWebPortal.Data.Abstract;
-
-
 using ERPWebPortal.Entities.Concrete;
-using ERPWebPortal.Shared.Abstract;
 using ERPWebPortal.Shared.Concrete.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERPWebPortal.Data.Concrete.Json
 {
-    public class JsonPrdOrderRepository : JsonRepository<PrdOrder>, IPrdOrderRepository
+    public class JsonFaultTypeRepository : JsonRepository<FaultType>, IFaultTypeRepository
     {
     }
 }

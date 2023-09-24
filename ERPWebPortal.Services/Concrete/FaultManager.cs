@@ -1,4 +1,6 @@
 ﻿using ERPWebPortal.Data.Abstract;
+
+
 using ERPWebPortal.Entities.Concrete;
 using ERPWebPortal.Services.Abstract;
 using System;
@@ -22,10 +24,13 @@ namespace ERPWebPortal.Services.Concrete
             
         }
         //istediğimiz methodlar repositorya bağlı olarak buradan ulaşılabilir,iterfacede oluşturduğumuz methodun içi doldurulur
-        public List<Fault> GetDataFault(string FilePath)
+        public List<Fault> GetDataFault(string filePath)
         {
 
-           return _faultRepository.GetAll(FilePath);
+           return _faultRepository.GetAll(filePath);
         }
+
+       
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPWebPortal.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,12 @@ namespace ERPWebPortal.Entities.Dtos
 
         public string PrdOrderNum { get; set; }
 
-        public double failureInterval { get; set; }
+        public List<SubPrdOrderReportDto> sub { get; set; }
 
-        public double breakInterval { get; set; }
+        public List<FaultType> FaultTypes { get; set; }
 
-        public double setupInterval { get; set; }
 
-        public double rdInterval{ get; set; }
+      
 
-        public double totalInterval { get; set; }
     }
 }

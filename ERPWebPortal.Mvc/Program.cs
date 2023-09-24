@@ -1,4 +1,6 @@
 using ERPWebPortal.Data.Abstract;
+
+
 using ERPWebPortal.Data.Concrete.Json;
 using ERPWebPortal.Services.Abstract;
 using ERPWebPortal.Services.Concrete;
@@ -16,8 +18,7 @@ builder.Services.AddScoped<IReportService, ReportManager>();
 builder.Services.AddScoped<IFaultService, FaultManager>();
 builder.Services.AddScoped<IPrdOrderRepository, JsonPrdOrderRepository>();
 builder.Services.AddScoped<IFaultRepository, JsonFaultRepository>();
-
-
+builder.Services.AddScoped<IFaultTypeRepository, JsonFaultTypeRepository>();
 
 
 var app = builder.Build();

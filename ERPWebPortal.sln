@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPWebPortal.Services", "ER
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPWebPortal.Mvc", "ERPWebPortal.Mvc\ERPWebPortal.Mvc.csproj", "{A5F10677-EC55-469C-A100-DCA2BC21A908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPWebPortal.Shared", "ERPWebPortal.Shared\ERPWebPortal.Shared.csproj", "{AA2486C1-E423-497F-8D36-47128811412B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPWebPortal.Shared", "ERPWebPortal.Shared\ERPWebPortal.Shared.csproj", "{AA2486C1-E423-497F-8D36-47128811412B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPWebPortal.Data", "ERPWebPortal.Data\ERPWebPortal.Data.csproj", "{670339E3-0328-4B2D-A4C3-8D32C61377F1}"
 EndProject
