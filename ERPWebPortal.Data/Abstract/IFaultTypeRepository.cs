@@ -10,5 +10,7 @@ namespace ERPWebPortal.Data.Abstract
 {
     public interface IFaultTypeRepository: IRepository<FaultType>
     {
+
+        public List<FaultType> GetFaultType(string filePath);
     }
 }

@@ -111,27 +111,27 @@ namespace ERPWebPortal.Services.Concrete
 
 
                    // arıza tipleri göre hesaplanılan aralıkların toplamı alınır
-                    if (fault.FaultType == FaultTypes.Ariza.ToString() && isConditon)
-                    {
-                        failureTime += (realEnd - realStart).TotalMinutes;
+                    //if (fault.FaultType == FaultTypes.Ariza.ToString() && isConditon)
+                    //{
+                    //    failureTime += (realEnd - realStart).TotalMinutes;
 
-                    }
-                    if (fault.FaultType == FaultTypes.Mola.ToString() && isConditon)
-                    {
+                    //}
+                    //if (fault.FaultType == FaultTypes.Mola.ToString() && isConditon)
+                    //{
 
-                        breakTime += (realEnd - realStart).TotalMinutes;
+                    //    breakTime += (realEnd - realStart).TotalMinutes;
 
-                    }
+                    //}
 
-                    if (fault.FaultType == FaultTypes.Setup.ToString() && isConditon)
-                    {
-                        setupTime += (realEnd - realStart).TotalMinutes;
-                    }
+                    //if (fault.FaultType == FaultTypes.Setup.ToString() && isConditon)
+                    //{
+                    //    setupTime += (realEnd - realStart).TotalMinutes;
+                    //}
 
-                    if (fault.FaultType == FaultTypes.Arge.ToString() && isConditon)
-                    {
-                        rdTime += (realEnd - realStart).TotalMinutes;
-                    }
+                    //if (fault.FaultType == FaultTypes.Arge.ToString() && isConditon)
+                    //{
+                    //    rdTime += (realEnd - realStart).TotalMinutes;
+                    //}
 
                 }
 

@@ -33,8 +33,7 @@ namespace ERPWebPortal.Services.Concrete
 
             List<Fault> faultList = _faultRepository.GetAll("faultData.json");
 
-            List<FaultType> faultTypeList = _faultTypeRepository.GetAll("faultType.json");
-            List<PrdOrderReportDto> reportList = new();
+             List<PrdOrderReportDto> reportList = new();
             //her iş emri için  ve duruş listesi içerisinde tek tek gezilip,iş emrinın başlama ve bitiş tarihi aralığında süreler hesaplanır ,duruş tipine göre toplamı yapılır
             foreach (var prdorder in prdOrderList)
             {
@@ -114,12 +113,12 @@ namespace ERPWebPortal.Services.Concrete
 
 
                 //duruş tipleri aynı olan dataların toplanması 
-                var Sonuc = from p in prdOrderReportDto.sub
+                var result = from p in prdOrderReportDto.sub
                             group p by p.FaultName into g
                             orderby g.Key
                             select new
                             {
-                                deger = g.Key,
+                                fName = g.Key,
                                 interval = g.Sum(prd => prd.FaultInterval)
 
                             };
@@ -127,11 +126,11 @@ namespace ERPWebPortal.Services.Concrete
 
                 prdOrderReportDto.sub = new();
 
-                foreach (var item in Sonuc)
+                foreach (var item in result)
                 {
                     SubPrdOrderReportDto item2 = new();
                     
-                    item2.FaultName = item.deger;
+                    item2.FaultName = item.fName;
                     item2.FaultInterval = item.interval;
                     prdOrderReportDto.sub.Add(item2);
 

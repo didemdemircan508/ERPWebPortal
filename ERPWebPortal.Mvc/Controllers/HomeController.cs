@@ -35,7 +35,8 @@ namespace ERPWebPortal.Mvc.Controllers
             List<FaultType>  faultTypes = new();
 
             prdOrderReportDtos = _reportService.Report();
-            faultTypes = _faultTypeRepository.GetAll("faultType.json");
+            //faultTypes = _faultTypeRepository.GetAll("faultType.json");
+            faultTypes = _faultTypeRepository.GetFaultType("faultData.json");
             generalPrdOrderListDtos.prdOrderReportDtos = prdOrderReportDtos;
             generalPrdOrderListDtos.faultTypes = faultTypes;
             return View(generalPrdOrderListDtos);

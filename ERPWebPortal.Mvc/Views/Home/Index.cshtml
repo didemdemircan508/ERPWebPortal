@@ -20,6 +20,7 @@
     <tbody>
         @foreach (var item in Model.prdOrderReportDtos)
         {
+            //dinamik kolon oluşturulması
             <tr>
                 <td>@item.PrdOrderNum</td>
                 @foreach (var item2 in Model.faultTypes)
@@ -48,9 +49,6 @@
     <tfoot>
     </tfoot>
 </table>
-
-
-
 
 
 @section Scripts
