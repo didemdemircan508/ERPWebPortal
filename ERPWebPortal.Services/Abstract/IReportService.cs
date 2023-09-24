@@ -12,7 +12,6 @@ namespace ERPWebPortal.Services.Abstract
     public interface IReportService
     {
         public List<PrdOrderReportDto> Report();
-     
-
+   
     }
 }

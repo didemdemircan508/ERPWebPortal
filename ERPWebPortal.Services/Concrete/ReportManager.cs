@@ -40,8 +40,9 @@ namespace ERPWebPortal.Services.Concrete
                 foreach (var fault in faultList)
                 {
                     isConditon = false;
-                    //duruş bitiş ve başlangıç tarihi iş emri başlangıç ve bitiş tarihi arasındaysa
-                    if (prdorder.StartDate < fault.FaultStartDate && prdorder.EndDate > fault.FaultEndDate)
+                    //duruş bitiş ve başlangıç tarihi iş emri başlangıç ve bitiş tarihi arasındaysa,yada eşitse
+                    //data deseni:08-11 ,09-10 ;08-11,08-10;09-11
+                    if (prdorder.StartDate <= fault.FaultStartDate && prdorder.EndDate >= fault.FaultEndDate)
                     {
                         //duruş başlangıç gerçek duruş başlangıç alınır
                         realStart = fault.FaultStartDate;
@@ -50,9 +51,9 @@ namespace ERPWebPortal.Services.Concrete
                         isConditon = true;
 
                     }
-                    //duruş başlangıç tarihi iş emri baş-bitş arasında fakat ,duruş bitiş tarihi ,iş emri bitiş tarihi dışındaysa
-
-                    if (prdorder.StartDate < fault.FaultStartDate && prdorder.EndDate < fault.FaultEndDate && fault.FaultStartDate < prdorder.EndDate)
+                    //duruş başlangıç tarihi iş emri baş-bitş arasında yada duruş başlangıç iş emri başlangıç tarihine eşitse fakat ,duruş bitiş tarihi ,iş emri bitiş tarihi dışındaysa
+                    //data deseni:08-11 ,09-12;08-11,08-12
+                    if (prdorder.StartDate <= fault.FaultStartDate && prdorder.EndDate < fault.FaultEndDate && fault.FaultStartDate < prdorder.EndDate)
                     {
                         //duruş başlangıç gerçek duruş alınır
                         realStart = fault.FaultStartDate;
@@ -61,8 +62,9 @@ namespace ERPWebPortal.Services.Concrete
                         isConditon = true;
 
                     }
-                    //duruş bitiş tarihi iş emri baş-bitiş arasında fakat duruş başlangıç tarihi iş emri başlangıç tarihinden küçükse
-                    if (prdorder.StartDate > fault.FaultStartDate && prdorder.EndDate > fault.FaultEndDate && prdorder.StartDate < fault.FaultEndDate)
+                    //duruş bitiş tarihi iş emri baş-bitiş arasında yada duruş bitiş iş emri tarihine eşitse fakat duruş başlangıç tarihi iş emri başlangıç tarihinden küçükse
+                    //data deseni 08-11,07-09;08-11,07-11
+                    if (prdorder.StartDate > fault.FaultStartDate && prdorder.EndDate >= fault.FaultEndDate && prdorder.StartDate < fault.FaultEndDate)
                     {
 
                         //duruş başlangıç iş emri başlangıç alınır
@@ -73,7 +75,9 @@ namespace ERPWebPortal.Services.Concrete
 
 
                     }
-                    //duruş başlangıç ve bitiş tarihi ,iş emri baş-bitiş tarihinin arsaında değilse ,
+                    //duruş başlangıç ve bitiş tarihi ,iş emri baş-bitiş tarihinin arasında değilse ,
+                    //08-11,07-12
+
                     if (prdorder.StartDate > fault.FaultStartDate && prdorder.EndDate < fault.FaultEndDate && prdorder.StartDate < fault.FaultEndDate)
                     {
 
@@ -107,8 +111,6 @@ namespace ERPWebPortal.Services.Concrete
                         rdTime += (realEnd - realStart).TotalMinutes;
                     }
 
-
-
                 }
 
                 //raporda kullanılan liste doldurulur
@@ -118,14 +120,11 @@ namespace ERPWebPortal.Services.Concrete
                 prdOrderReportDto.setupInterval = setupTime;
                 prdOrderReportDto.rdInterval = rdTime;
                 prdOrderReportDto.totalInterval = failureTime + breakTime + setupTime + rdTime;
-
                 reportList.Add(prdOrderReportDto);
 
             }
 
             return reportList;
-
-
 
         }
 
