@@ -21,12 +21,7 @@ namespace ERPWebPortal.Data.Concrete.Json
             List<Fault> faultList = JsonSerializer.Deserialize<List<Fault>>(jsonString)!;
             var result = from p in faultList
                         group p by p.FaultType into g
-                        orderby g.Key
-                        select new
-                        {
-                            fName = g.Key,
-                        
-                        };
+                        orderby g.Key select new {fName = g.Key };
 
             foreach (var item in result)
             {
