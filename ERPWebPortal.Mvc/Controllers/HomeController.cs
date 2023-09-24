@@ -13,9 +13,9 @@ namespace ERPWebPortal.Mvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         //kullanıcalak olan rapor için reportservice interface constructorda tanımlanır,
         //arayüz sınıfında service katmanı kullanılmalıdır(best practice)
+        private readonly ILogger<HomeController> _logger;
         private readonly IFaultTypeRepository _faultTypeRepository;
         private readonly IReportService _reportService;
 
